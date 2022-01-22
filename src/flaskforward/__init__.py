@@ -1,6 +1,7 @@
 
 from . import routines as routines
 from . import enums as enums
+from . import structs as structs
 
 from .globals import url as url
 from .globals import headers as headers
