@@ -28,3 +28,5 @@ params  : dict               = None
 auth    : tuple              = None
 cookies : dict               = None
 hooks   : dict               = None
+method  : str                = None
+files   : dict | bytes       = None

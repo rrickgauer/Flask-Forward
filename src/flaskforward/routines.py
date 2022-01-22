@@ -13,6 +13,7 @@ from __future__ import annotations
 import requests
 import flask
 from . import enums, globals as g
+from .structs import SingleRequest
 
 #------------------------------------------------------
 # Forward the incoming flask request to the external destination
@@ -29,7 +30,8 @@ def forward(endpoint: str) -> flask.Response:
 # Returns the external api's response
 #------------------------------------------------------
 def sendExternalRequest(flask_request: flask.Request, endpoint: str) -> requests.Response:
-    return requests.request(
+    
+    body = SingleRequest(
         method  = flask_request.method,
         url     = f'{g.url}{endpoint}',
         auth    = g.auth,
@@ -39,6 +41,8 @@ def sendExternalRequest(flask_request: flask.Request, endpoint: str) -> requests
         headers = g.headers,
         cookies = flask.request.cookies,
     )
+
+    return sendRequest(body)
 
 
 #------------------------------------------------------
@@ -74,4 +78,17 @@ def _buildUrl(flask_request: flask.Request) -> str:
 def _getViewPathEndpoint(flask_request: flask.Request) -> str:
     return list(flask_request.view_args.values())[0]
 
-
+#------------------------------------------------------
+# Send a pyrequests 
+#------------------------------------------------------
+def sendRequest(request_body: SingleRequest) -> requests.Response:
+    return requests.request(
+        method  = request_body.method,
+        url     = request_body.url,
+        auth    = request_body.auth,
+        params  = request_body.params,
+        files   = request_body.files,
+        data    = request_body.data,
+        headers = request_body.headers,
+        cookies = request_body.cookies,
+    )
