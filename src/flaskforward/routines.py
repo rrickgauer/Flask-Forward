@@ -38,7 +38,7 @@ def sendExternalRequest(flask_request: flask.Request, endpoint: str) -> requests
         params  = flask_request.args.to_dict(),
         files   = flask_request.files.to_dict(),
         data    = _getData(flask_request),
-        headers = g.headers,
+        headers = flask.request.headers,
         cookies = flask.request.cookies,
     )
 
