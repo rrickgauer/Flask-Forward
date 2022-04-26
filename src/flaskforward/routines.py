@@ -35,6 +35,11 @@ def sendExternalRequest(flask_request: flask.Request, endpoint: str) -> requests
     # if g.headers:
     #     all_headers.update(g.headers)
 
+    print("\n" * 10)
+    url = f'{g.url}{endpoint}'
+    print(f'flask-forward url: {url}')
+    print("\n" * 10)
+
     body = SingleRequest(
         method  = flask_request.method,
         url     = f'{g.url}{endpoint}',
