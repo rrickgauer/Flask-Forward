@@ -30,7 +30,11 @@ def forward(endpoint: str) -> flask.Response:
 # Returns the external api's response
 #------------------------------------------------------
 def sendExternalRequest(flask_request: flask.Request, endpoint: str) -> requests.Response:
-    
+    all_headers = {**flask_request.headers}
+
+    if g.headers:
+        all_headers.update(g.headers)
+
     body = SingleRequest(
         method  = flask_request.method,
         url     = f'{g.url}{endpoint}',
@@ -38,7 +42,8 @@ def sendExternalRequest(flask_request: flask.Request, endpoint: str) -> requests
         params  = flask_request.args.to_dict(),
         files   = flask_request.files.to_dict(),
         data    = _getData(flask_request),
-        headers = flask.request.headers,
+        # headers = flask.request.headers,
+        headers = all_headers,
         cookies = flask.request.cookies,
     )
 
